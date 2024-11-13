@@ -32,3 +32,6 @@ Install them if they are not available in your environment.
 ## Important Notes
 - Use Responsibly: This script is intended for authorized testing and research purposes. Ensure you have permission to test the target network.
 - IPv6 Requirement: This attack requires an IPv6-enabled network environment for successful execution.
+
+## Disclaimer
+This tool is for educational and authorized testing purposes only. Unauthorized use of this tool may violate the law. The authors are not liable for any misuse or damage caused by this script.
