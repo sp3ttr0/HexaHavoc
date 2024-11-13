@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===============================================================
-# HexaHavoc - IPv6 DNS Takeover Automation Script
+# hexahavoc.sh - IPv6 DNS Takeover Automation Script
 # ---------------------------------------------------------------
 # This script automates the setup of an IPv6 DNS takeover attack 
 # using mitm6 and impacket-ntlmrelayx, leveraging tmux to manage 
