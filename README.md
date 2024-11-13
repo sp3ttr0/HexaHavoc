@@ -5,6 +5,7 @@ This script automates the process of launching an IPv6 DNS takeover attack using
 ## Prerequisites
 
 Ensure the following tools are installed:
+- tmux
 - mitm6
 - impacket
 
