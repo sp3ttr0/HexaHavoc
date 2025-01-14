@@ -1,6 +1,6 @@
 # HexaHavoc
 
-This script automates the process of launching an IPv6 DNS takeover attack using mitm6 and impacket-ntlmrelayx within a tmux session. It enables network administrators and penetration testers to set up a man-in-the-middle attack, exploiting IPv6 DNS vulnerabilities for research and testing purposes.
+This script automates launching an IPv6 DNS takeover attack using mitm6 and impacket-ntlmrelayx within a tmux session. It enables network administrators and penetration testers to set up a man-in-the-middle attack, exploiting IPv6 DNS vulnerabilities for research and testing purposes.
 
 ## Prerequisites
 
