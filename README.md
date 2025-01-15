@@ -1,19 +1,20 @@
 # HexaHavoc
 
-This script automates launching an IPv6 DNS takeover attack using mitm6 and impacket-ntlmrelayx within a tmux session. It enables network administrators and penetration testers to set up a man-in-the-middle attack, exploiting IPv6 DNS vulnerabilities for research and testing purposes.
+HexaHavoc is an automation script designed to facilitate an IPv6 DNS takeover attack. It leverages **mitm6** and **impacket-ntlmrelayx** within a **tmux** session to enable network administrators and penetration testers to conduct research and test IPv6 DNS vulnerabilities. This script performs a man-in-the-middle attack, allowing for NTLM relay attacks and DNS takeover simulations.
 
 ## Prerequisites
 
-Ensure the following tools are installed:
-- tmux
-- mitm6
-- impacket
+Before running this script, ensure that the following tools are installed:
+
+- **tmux**: For managing multiple terminal sessions.
+- **mitm6**: To facilitate IPv6 DNS takeover attacks.
+- **impacket**: For NTLM relay functionality.
 
 Install them if they are not available in your environment.
 
 ## Usage:
 ```bash
-./ipv6_dns_takeover.sh -d <target_domain> -t <target_ip> [-i <interface>] [-v]
+./hexahavoc.sh -d <target_domain> -t <target_ip> [-i <interface>] [-v]
 ```
 
 ## Options
@@ -26,12 +27,12 @@ Install them if they are not available in your environment.
 
 ## Example
 ```bash
-./ipv6_dns_takeover.sh -d example.com -t 192.168.1.10 -i eth1 -v
+./hexahavoc.sh -d example.com -t 192.168.1.10 -i eth1 -v
 ```
 
 ## Important Notes
-- Use Responsibly: This script is intended for authorized testing and research purposes. Ensure you have permission to test the target network.
-- IPv6 Requirement: This attack requires an IPv6-enabled network environment for successful execution.
+- Use Responsibly: This script is intended solely for authorized testing and research purposes. Always ensure that you have explicit permission to perform penetration testing or security assessments on the target network.
+- IPv6 Requirement: This attack only works in environments with IPv6 enabled. Ensure your target network is IPv6-enabled for successful execution.
 
 ## Disclaimer
-This tool is for educational and authorized testing purposes only. Unauthorized use of this tool may violate the law. The authors are not liable for any misuse or damage caused by this script.
+This tool is provided for educational and authorized testing purposes only. Unauthorized use may violate laws and regulations. The authors of this script are not responsible for any misuse or damage caused by the use of this tool. By using this script, you agree to take full responsibility for your actions and their consequences.
