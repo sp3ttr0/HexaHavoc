@@ -55,6 +55,8 @@ banner() {
   echo -e " |___|  / \___  >/__/\_ \(____  /|___|  /(____  / \_/  \____/  \___  > "
   echo -e "      \/      \/       \/     \/      \/      \/                   \/  "
   echo -e "${YELLOW}                                by sp3ttro                             "
+  echo -e "                                                                       "
+  echo -e "                                                                       "
   echo -e "${RESET}"
 }                                                      
 
