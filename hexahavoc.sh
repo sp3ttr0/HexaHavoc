@@ -87,6 +87,9 @@ if [ -z "$target_domain" ] || [ -z "$target_ip" ]; then
   usage
 fi
 
+# Show the banner
+banner
+
 # Validate target domain
 if ! [[ "$target_domain" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
   echo -e "${RED}Error: Invalid domain format.${RESET}"
@@ -121,9 +124,6 @@ fi
 if [ "$silent" -eq 1 ]; then
   exec > /dev/null 2>&1
 fi
-
-# Display the banner
-banner
 
 # Check if the tmux session already exists
 echo -e "${CYAN}Checking if the tmux session '$session_name' already exists...${RESET}"
