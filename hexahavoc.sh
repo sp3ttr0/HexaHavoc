@@ -103,7 +103,7 @@ if ! [[ "$target_ip" =~ ^[0-9a-fA-F:.]+$ ]]; then
 fi
 
 # Check if target IP is reachable
-ping6 -c 1 "$target_ip" &>/dev/null || {
+ping -c 1 "$target_ip" &>/dev/null || {
   echo -e "${RED}Error: Target IP is not reachable.${RESET}"
   exit 1
 }
