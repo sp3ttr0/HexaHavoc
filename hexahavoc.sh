@@ -128,10 +128,29 @@ fi
 # Check if the tmux session already exists
 echo -e "${CYAN}Checking if the tmux session '$session_name' already exists...${RESET}"
 if tmux has-session -t "$session_name" 2>/dev/null; then
-  echo -e "${GREEN}Session exists. Attaching...${RESET}"
-  tmux -CC attach-session -t "$session_name"
-  exit 0
+  echo -e "${YELLOW}[!] Tmux session '${session_name}' already exists.${RESET}"
+  echo -e "${BLUE}Do you want to:${RESET}"
+  echo -e "  [a] Attach to existing session"
+  echo -e "  [k] Kill existing session and start a new one"
+  read -rp "$(echo -e "${YELLOW}Choose [a/k]: ${RESET}")" user_choice
+
+  case "$user_choice" in
+    [aA])
+      echo -e "${GREEN}[*] Attaching to existing tmux session...${RESET}"
+      tmux -CC attach-session -t "$session_name"
+      exit 0
+      ;;
+    [kK])
+      echo -e "${RED}[*] Killing existing tmux session...${RESET}"
+      tmux kill-session -t "$session_name"
+      ;;
+    *)
+      echo -e "${RED}[!] Invalid choice. Exiting.${RESET}"
+      exit 1
+      ;;
+  esac
 fi
+
 
 # Create a new tmux session
 echo -e "${CYAN}Creating a new tmux session named '$session_name'...${RESET}"
