@@ -17,7 +17,7 @@ Install them if they are not available in your environment.
 
 ## Usage:
 ```bash
-./hexahavoc.sh -d <target_domain> -t <target_ip> [-i <interface>] [-v]
+./hexahavoc.sh -d <target_domain> -t <target_ip> [-i <interface>] [-l <loot_dir>] [-v]
 ```
 
 ## Options
