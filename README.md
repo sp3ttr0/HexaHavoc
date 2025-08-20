@@ -1,6 +1,6 @@
-# HexaHavoc
+# hexahavoc
 
-**HexaHavoc** is an automation script designed to facilitate an IPv6 DNS takeover attack. It leverages **mitm6** and **impacket-ntlmrelayx** within a **tmux** session to enable network administrators and penetration testers to conduct research and test IPv6 DNS vulnerabilities.
+**hexhavoc** is an automation script designed to facilitate an IPv6 DNS takeover attack. It leverages **mitm6** and **impacket-ntlmrelayx** within a **tmux** session to enable network administrators and penetration testers to conduct research and test IPv6 DNS vulnerabilities.
 
 This script performs a man-in-the-middle attack via IPv6 rogue DNS server, allowing for NTLM relay attacks and DNS takeover simulations.
 
@@ -22,10 +22,10 @@ Install them if they are not available in your environment.
 
 ## Options
 ```
--d <target_domain>: Specifies the target domain for the DNS takeover.
--t <target_ip>: Specifies the target IP address to relay NTLM authentication.
--i <interface>: (Optional) Specifies the network interface to use. Defaults to eth0.
--l	(Optional) Loot output directory where captured hashes and credentials will be saved. Defaults to dumps/.
+-d <target_domain> (Required) Specifies the target domain for the DNS takeover.
+-t <target_ip>     (Required) Specifies the target IP address to relay NTLM authentication.
+-i <interface>     (Optional) Network interface to use. Defaults to eth0.
+-l	(Optional)     (Optional) Loot output directory where captured hashes and credentials will be saved. Defaults to dumps/.
 -v: (Optional) Enables verbose logging for debugging.
 ```
 
