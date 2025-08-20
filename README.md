@@ -22,11 +22,12 @@ Install them if they are not available in your environment.
 
 ## Options
 ```
--d <target_domain> (Required) Specifies the target domain for the DNS takeover.
--t <target_ip>     (Required) Specifies the target IP address to relay NTLM authentication.
--i <interface>     (Optional) Network interface to use. Defaults to eth0.
--l	(Optional)     (Optional) Loot output directory where captured hashes and credentials will be saved. Defaults to dumps/.
--v: (Optional) Enables verbose logging for debugging.
+-d <target_domain>    (Required) Specifies the target domain for the DNS takeover.
+-t <target_ip>        (Required) Specifies the target IP address to relay NTLM authentication.
+-i <interface>        (Optional) Network interface to use. Defaults to eth0.
+-l <folder>           (Optional) Loot output directory where captured hashes and credentials will be saved. Defaults to dumps/.
+-v                    (Optional) Enable verbose logging. Useful for debugging.
+-s                    (Optional) Silent mode – suppresses console output.
 ```
 
 ## Example
