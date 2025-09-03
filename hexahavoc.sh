@@ -3,11 +3,6 @@
 # ===============================================================
 # hexahavoc.sh - IPv6 DNS Takeover Automation Script
 # ---------------------------------------------------------------
-# This script automates the setup of an IPv6 DNS takeover attack 
-# using mitm6 and impacket-ntlmrelayx, leveraging tmux to manage 
-# the session. Designed for network administrators and pentesters
-# to identify potential vulnerabilities in IPv6 DNS handling.
-#
 # Author: Howell King Jr. | Github: https://github.com/sp3ttr0
 # ===============================================================
 
